@@ -1,0 +1,20 @@
+import {ReactNode} from "react";
+
+import {ThemeProvider as NextThemesProvider} from "next-themes";
+
+const Providers = ({children}: {children: ReactNode}) => {
+  return (
+    <>
+      <NextThemesProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        {children}
+      </NextThemesProvider>
+    </>
+  );
+};
+
+export default Providers;
