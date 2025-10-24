@@ -3,6 +3,30 @@
 
 @custom-variant dark (&:is(.dark *));
 
+:root {
+  --text-primary: #1a1c1f;
+  --text-secondary: #505661;
+  --text-brand: #6b4dfc;
+  --text-brand-secondary: #b6a6ff;
+  --background-primary: #ffffff;
+  --background-brand: #f5f3ff;
+  --background-brand-secondary: #ece8ff;
+  --background-brand-hover: #7b61ff;
+  --border-primary: #d8d0ff;
+}
+
+:root.dark {
+  --text-primary: #f4f5f7;
+  --text-secondary: #b8bac4;
+  --text-brand: #c2b6ff;
+  --text-brand-secondary: #a996ff;
+  --background-primary: #0c0b14;
+  --background-brand: #171528;
+  --background-brand-secondary: #221f3a;
+  --background-brand-hover: #8a75ff;
+  --border-primary: #4e4675;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
