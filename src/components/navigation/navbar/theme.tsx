@@ -17,7 +17,7 @@ const Theme = () => {
       <Button
         variant="ghost"
         size="icon"
-        className="focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="cursor-pointer border border-[var-(border-primary)]"
         onClick={toggleTheme}
       >
         <Moon className="scale-[115%] rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

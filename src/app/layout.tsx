@@ -5,7 +5,7 @@ import Providers from "@/components/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Mentora",
+  title: "mentora",
   description:
     "A modern mental wellness guide inspired by timeless Bhagavad Gita teachings.",
 };
@@ -15,7 +15,7 @@ export default function GlobalLayout({children}: {children: React.ReactNode}) {
     <>
       <html lang="en" suppressHydrationWarning>
         <head />
-        <body className="flex h-[100dvh] flex-col">
+        <body className="flex h-dvh flex-col">
           <Providers>{children}</Providers>
         </body>
       </html>

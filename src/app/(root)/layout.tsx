@@ -9,11 +9,11 @@ const RootLayout = ({children}: {children: ReactNode}) => {
         <Navbar />
       </header>
 
-      <main className="flex-grow">{children}</main>
+      <main className="grow">{children}</main>
 
       <footer className="p-4">
-        <p className="text-center text-gray-500">Add commentMore actions
-          © {new Date().getFullYear()} Next Starter.
+        <p className="text-secondary text-center">
+          © {new Date().getFullYear()} Mentora.
         </p>
       </footer>
     </>
