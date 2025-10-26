@@ -5,3 +5,8 @@ pnpm-lock.yaml
 package-lock.json
 
 .next /*
+
+.editorconfig
+.husky/*
+.next/*
+.prettierignore
