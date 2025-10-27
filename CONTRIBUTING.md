@@ -2,7 +2,7 @@
 
 Thank you for considering contributing to our collaborative learning environment!
 
-We welcome any suggestions or improvements that can enhance the learning experience for all cohort members.Add commentMore actions
+We welcome any suggestions or improvements that can enhance the learning experience for all cohort members.
 </br></br>
 
 ## Pull Requests
