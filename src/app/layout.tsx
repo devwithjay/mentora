@@ -2,6 +2,7 @@ import type {Metadata} from "next";
 import React from "react";
 
 import Providers from "@/components/providers";
+import {Toaster} from "@/components/ui/sonner";
 
 import "./globals.css";
 
@@ -18,6 +19,7 @@ export default function GlobalLayout({children}: {children: React.ReactNode}) {
         <head />
         <body className="flex h-dvh flex-col">
           <Providers>{children}</Providers>
+          <Toaster richColors />
         </body>
       </html>
     </>

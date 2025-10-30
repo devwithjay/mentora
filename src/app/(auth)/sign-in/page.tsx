@@ -4,7 +4,8 @@ import SignInForm from "@/components/forms/sign-in-form";
 const SignIn = () => {
   return (
     <AuthForm
-      headerLabel="Welcome Back"
+      title="Welcome Back"
+      subTitle="Login to continue your mental wellness journey."
       backButtonMessage="Don't have an account yet?"
       backButtonLabel="Sign up"
       backButtonHref="/sign-up"

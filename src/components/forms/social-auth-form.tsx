@@ -6,30 +6,30 @@ import {Button} from "@/components/ui/button";
 
 const SocialAuthForm = () => {
   const buttonClass =
-    "min-h-10 flex-1 rounded-2 px-4 py-3.5 cursor-pointer dark:text-white dark:bg-neutral-800";
+    "min-h-11 w-full cursor-pointer bg-transparent dark:hover:bg-transparent border-[var(--border-primary)] border-1 shadow-none text-[var(--text-secondary)]";
 
   return (
-    <div className="mt-6 flex flex-wrap gap-3">
-      <Button className={buttonClass} onClick={() => {}}>
+    <div className="mt-6 space-y-3">
+      <Button className={buttonClass} onClick={() => {}} variant="ghost">
         <Image
           src="/icons/github.svg"
           alt="Github Logo"
           width={22}
           height={22}
-          className="object-contain invert sm:size-[20] dark:invert-0"
+          className="object-contain invert dark:invert-0"
         />
-        <span className="hidden sm:ml-0.5 sm:block">Sign in with Github</span>
+        <span className="text-base">Continue with Github</span>
       </Button>
 
       <Button className={buttonClass} onClick={() => {}}>
         <Image
           src="/icons/google.svg"
           alt="Google Logo"
-          width={22}
-          height={22}
-          className="object-contain sm:size-[20]"
+          width={20}
+          height={20}
+          className="object-contain"
         />
-        <span className="hidden sm:ml-0.5 sm:block">Sign in with Google</span>
+        <span className="text-base">Continue with Google</span>
       </Button>
     </div>
   );

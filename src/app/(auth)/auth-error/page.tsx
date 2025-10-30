@@ -5,7 +5,8 @@ import AuthForm from "@/components/forms/auth-form";
 const AuthErrorPage = () => {
   return (
     <AuthForm
-      headerLabel="Something went wrong"
+      title=""
+      subTitle="Something went wrong"
       backButtonLabel="Back to signin"
       backButtonMessage=""
       backButtonHref="/sign-in"

@@ -4,7 +4,8 @@ import SignUpForm from "@/components/forms/sign-up-form";
 const SignUp = () => {
   return (
     <AuthForm
-      headerLabel="Create an account"
+      title=""
+      subTitle="Create an account"
       backButtonMessage="Already have an account..?"
       backButtonLabel="Sign in"
       backButtonHref="/sign-in"
