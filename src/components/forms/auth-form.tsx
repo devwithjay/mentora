@@ -30,7 +30,7 @@ const AuthForm = ({
   return (
     <section className="w-full max-w-[410px] scale-95 rounded-xl px-6 py-10 sm:px-8">
       <div className="flex w-full flex-col items-center justify-center gap-y-4 text-center">
-        <Logo className="mb-4 scale-125" />
+        <Logo className="mb-2 scale-125" />
 
         <h1 className={cn("text-2xl font-semibold text-(--text-primary)")}>
           {title}

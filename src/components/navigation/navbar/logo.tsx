@@ -3,9 +3,10 @@ import Link from "next/link";
 
 type LogoProps = {
   className?: string;
+  showText?: boolean;
 };
 
-const Logo = ({className = ""}: LogoProps) => {
+const Logo = ({showText = false, className = ""}: LogoProps) => {
   return (
     <Link href="/" className={`flex items-center gap-x-2 ${className}`}>
       <Image
@@ -24,7 +25,9 @@ const Logo = ({className = ""}: LogoProps) => {
         className="hidden dark:block"
       />
 
-      <p className="text-2xl font-semibold text-(--text-primary)">Mentora</p>
+      {showText && (
+        <p className="text-2xl font-semibold text-(--text-primary)">Mentora</p>
+      )}
     </Link>
   );
 };

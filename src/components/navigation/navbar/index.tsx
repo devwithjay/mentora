@@ -6,7 +6,7 @@ import Theme from "./theme";
 const Navbar = () => {
   return (
     <nav className="flex w-full items-center justify-between gap-5 px-6 py-4 sm:px-12">
-      <Logo />
+      <Logo showText />
 
       <div className="flex gap-x-4">
         <Theme />

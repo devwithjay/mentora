@@ -15,7 +15,7 @@ const AuthLayout = ({children}: Readonly<{children: React.ReactNode}>) => {
         {children}
       </main>
 
-      <footer className="p-4">
+      <footer className="flex justify-between px-6 py-4 sm:px-12">
         <p className="text-center text-(--text-secondary)">
           © {new Date().getFullYear()} Proof Kit.
         </p>
