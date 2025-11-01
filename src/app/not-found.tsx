@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import {Button} from "@/components/ui/button";
+import ROUTES from "@/constants/routes";
 
 const NotFound = () => {
   return (
@@ -10,7 +11,7 @@ const NotFound = () => {
           404 | The page you are looking for does not exist.
         </p>
       </div>
-      <Link href="/">
+      <Link href={ROUTES.HOME}>
         <Button
           variant="secondary"
           className="cursor-pointer gap-2 bg-(--background-brand) text-white hover:bg-(--background-brand-hover)"
