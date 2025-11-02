@@ -17,7 +17,7 @@ const Theme = () => {
       <Button
         variant="ghost"
         size="icon"
-        className="cursor-pointer border border-(--border-primary) hover:bg-(--background-secondary) dark:hover:bg-(--background-secondary)"
+        className="btn-secondary"
         onClick={toggleTheme}
       >
         <Moon className="scale-[115%] rotate-0 transition-all dark:scale-0 dark:-rotate-90" />

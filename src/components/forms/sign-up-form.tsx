@@ -137,7 +137,7 @@ const SignUpForm = () => {
 
         <Button
           type="submit"
-          className="mt-4 min-h-10 w-full cursor-pointer bg-[var(--background-brand)] px-4 py-2 text-white hover:bg-[var(--background-brand-hover)]"
+          className="btn-primary min-h-11 w-full px-4 py-2 text-base"
           disabled={isPending}
         >
           {isPending ? (

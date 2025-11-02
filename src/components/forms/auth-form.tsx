@@ -2,11 +2,10 @@ import type {Route} from "next";
 import Link from "next/link";
 import {ReactNode} from "react";
 
+import SocialAuthForm from "@/components/forms/social-auth-form";
+import Logo from "@/components/navigation/navbar/logo";
 import ROUTES from "@/constants/routes";
 import {cn} from "@/lib/utils";
-
-import Logo from "../navigation/navbar/logo";
-import SocialAuthForm from "./social-auth-form";
 
 type AuthFormProps = {
   children: ReactNode;
@@ -32,11 +31,8 @@ const AuthForm = ({
       <div className="flex w-full flex-col items-center justify-center gap-y-4 text-center">
         <Logo className="mb-2 scale-125" />
 
-        <h1 className={cn("text-2xl font-semibold text-(--text-primary)")}>
-          {title}
-        </h1>
-
-        <p className="text-(-text-secondary) max-w-[300px] text-sm leading-relaxed">
+        <h1 className={cn("text-primary text-2xl font-semibold")}>{title}</h1>
+        <p className="text-secondary max-w-[300px] text-sm leading-relaxed">
           {subTitle}
         </p>
       </div>
@@ -44,21 +40,19 @@ const AuthForm = ({
       <div className="mt-8 w-full">{children}</div>
 
       <div className="my-4 flex items-center">
-        <div className="grow border border-(--border-primary)"></div>
-        <div className="text-(-text-secondary) px-2 text-xs">OR</div>
-        <div className="grow border border-(--border-primary)"></div>
+        <div className="border-primary grow border"></div>
+        <div className="text-secondary px-2 text-xs">OR</div>
+        <div className="border-primary grow border"></div>
       </div>
 
       {showSocial && <SocialAuthForm />}
 
       <Link
         href={backButtonHref || ROUTES.HOME}
-        className="text-(-text-secondary) mt-6 inline-block w-full text-center text-base font-light"
+        className="text-secondary mt-6 inline-block w-full text-center text-base font-light"
       >
         {backButtonMessage}
-        <span className="ml-1.5 font-medium text-(--text-brand)">
-          {backButtonLabel}
-        </span>
+        <span className="text-brand ml-1.5 font-medium">{backButtonLabel}</span>
       </Link>
     </section>
   );

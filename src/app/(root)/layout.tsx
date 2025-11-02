@@ -12,7 +12,7 @@ const RootLayout = ({children}: {children: ReactNode}) => {
       <main className="grow">{children}</main>
 
       <footer className="p-4">
-        <p className="text-center text-(--text-secondary)">
+        <p className="text-secondary text-center">
           © {new Date().getFullYear()} Mentora.
         </p>
       </footer>

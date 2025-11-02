@@ -26,7 +26,7 @@ const Logo = ({showText = false, className = ""}: LogoProps) => {
       />
 
       {showText && (
-        <p className="text-2xl font-semibold text-(--text-primary)">Mentora</p>
+        <p className="text-primary text-2xl font-semibold">Mentora</p>
       )}
     </Link>
   );

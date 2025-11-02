@@ -27,6 +27,53 @@
   --border-primary: #4e4675;
 }
 
+@layer utilities {
+  .text-primary {
+    color: var(--text-primary);
+  }
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+  .text-brand {
+    color: var(--text-brand);
+  }
+  .text-brand-secondary {
+    color: var(--text-brand-secondary);
+  }
+  .bg-primary {
+    background-color: var(--background-primary);
+  }
+  .bg-secondary {
+    background-color: var(--background-secondary);
+  }
+  .bg-brand {
+    background-color: var(--background-brand);
+  }
+  .bg-brand-secondary {
+    background-color: var(--background-brand-secondary);
+  }
+  .hover\:bg-brand-hover:hover {
+    background-color: var(--background-brand-hover);
+  }
+  .border-primary {
+    border-color: var(--border-primary);
+  }
+  .border-brand {
+    border-color: var(--border-brand);
+  }
+  .btn-primary {
+    @apply cursor-pointer bg-(--background-brand) text-white hover:bg-(--background-brand-hover);
+  }
+  .btn-secondary {
+    @apply cursor-pointer border border-(--border-primary) hover:bg-(--background-secondary) dark:hover:bg-(--background-secondary);
+  }
+  .placeholder\:text-secondary {
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+  }
+}
+
 :root {
   --font-dm-sans: "DM Sans", system-ui, sans-serif;
 }

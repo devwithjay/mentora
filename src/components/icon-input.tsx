@@ -29,7 +29,7 @@ const IconInput = <
 }: IconInputProps<TFieldValues, TName>) => {
   return (
     <div
-      className={`flex items-center rounded-md border border-(--border-primary) px-2 py-0.5 shadow-none dark:bg-transparent ${className}`}
+      className={`border-primary flex items-center rounded-md border px-2 py-0.5 shadow-none dark:bg-transparent ${className}`}
     >
       <Icon className="ml-2 size-5 text-(--text-secondary)" />
 
@@ -38,7 +38,7 @@ const IconInput = <
         placeholder={placeholder}
         type={type}
         disabled={disabled}
-        className="min-h-10 border-0 shadow-none placeholder:text-(--text-secondary) hover:outline-none focus:border-0 focus-visible:ring-0 md:text-base dark:bg-transparent"
+        className="placeholder:text-secondary min-h-10 border-0 shadow-none hover:outline-none focus:border-0 focus-visible:ring-0 md:text-base dark:bg-transparent"
       />
     </div>
   );

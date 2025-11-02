@@ -6,7 +6,7 @@ import {Button} from "@/components/ui/button";
 
 const SocialAuthForm = () => {
   const buttonClass =
-    "min-h-11 w-full cursor-pointer bg-transparent dark:hover:bg-transparent border-[var(--border-primary)] border-1 shadow-none text-[var(--text-secondary)]";
+    "min-h-11 w-full cursor-pointer bg-transparent dark:hover:bg-transparent border-primary border-1 shadow-none text-secondary";
 
   return (
     <div className="mt-6 space-y-3">

@@ -101,7 +101,7 @@ const SignInForm = () => {
 
         <Button
           type="submit"
-          className="min-h-11 w-full cursor-pointer bg-(--background-brand) px-4 py-2 text-white hover:bg-(--background-brand-hover)"
+          className="btn-primary min-h-11 w-full px-4 py-2"
           disabled={isPending}
         >
           {isPending ? (
