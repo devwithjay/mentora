@@ -29,10 +29,10 @@ const AuthForm = ({
   return (
     <section className="w-full max-w-[410px] scale-95 rounded-xl px-6 py-10 sm:px-8">
       <div className="flex w-full flex-col items-center justify-center gap-y-4 text-center">
-        <Logo className="mb-2 scale-125" />
+        <Logo className="mb-2 scale-150" />
 
         <h1 className={cn("text-primary text-2xl font-semibold")}>{title}</h1>
-        <p className="text-secondary max-w-[300px] text-sm leading-relaxed">
+        <p className="text-secondary max-w-[340px] text-sm leading-relaxed">
           {subTitle}
         </p>
       </div>
