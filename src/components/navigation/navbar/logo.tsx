@@ -12,16 +12,16 @@ const Logo = ({showText = false, className = ""}: LogoProps) => {
       <Image
         src="/logo.png"
         alt="Mentora Logo"
-        width={34}
-        height={34}
+        width={36}
+        height={36}
         className="block dark:hidden"
       />
 
       <Image
         src="/logo-dark.png"
         alt="Mentora Logo Dark"
-        width={34}
-        height={34}
+        width={36}
+        height={36}
         className="hidden dark:block"
       />
 

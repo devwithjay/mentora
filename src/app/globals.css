@@ -4,27 +4,27 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --text-primary: #1a1c1f;
-  --text-secondary: #505661;
-  --text-brand: #6b4dfc;
-  --text-brand-secondary: #b6a6ff;
+  --text-primary: #18201f;
+  --text-secondary: #4f605e;
+  --text-brand: #2f8e7e;
+  --text-brand-secondary: #7dcfc0;
   --background-primary: #ffffff;
-  --background-brand: #f5f3ff;
-  --background-brand-secondary: #ece8ff;
-  --background-brand-hover: #7b61ff;
-  --border-primary: #d8d0ff;
+  --background-brand: #2f8e7e;
+  --background-brand-secondary: #d9f5f1;
+  --background-brand-hover: #3aa394;
+  --border-primary: #bfe9e2;
 }
 
 :root.dark {
-  --text-primary: #f4f5f7;
-  --text-secondary: #b8bac4;
-  --text-brand: #c2b6ff;
-  --text-brand-secondary: #a996ff;
-  --background-primary: #0c0b14;
-  --background-brand: #171528;
-  --background-brand-secondary: #221f3a;
-  --background-brand-hover: #8a75ff;
-  --border-primary: #4e4675;
+  --text-primary: #eef7f6;
+  --text-secondary: #b3c6c4;
+  --text-brand: #90dfd2;
+  --text-brand-secondary: #72c7ba;
+  --background-primary: #0d1312;
+  --background-brand: #64c7b7;
+  --background-brand-secondary: #1f2c2a;
+  --background-brand-hover: #3bbfa9;
+  --border-primary: #36514f;
 }
 
 @layer utilities {
@@ -62,10 +62,10 @@
     border-color: var(--border-brand);
   }
   .btn-primary {
-    @apply cursor-pointer bg-(--background-brand) text-white hover:bg-(--background-brand-hover);
+    @apply cursor-pointer bg-(--background-brand) text-white shadow-none hover:bg-(--background-brand-hover) focus-visible:border-none focus-visible:ring-0;
   }
   .btn-secondary {
-    @apply cursor-pointer border border-(--border-primary) hover:bg-(--background-secondary) dark:hover:bg-(--background-secondary);
+    @apply cursor-pointer border border-(--border-primary) shadow-none hover:bg-(--background-secondary) focus-visible:border-(--border-primary) focus-visible:ring-0 dark:hover:bg-(--background-secondary);
   }
   .placeholder\:text-secondary {
     &::placeholder {
