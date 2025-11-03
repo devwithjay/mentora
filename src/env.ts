@@ -7,6 +7,11 @@ export const env = createEnv({
     NODE_ENV: z.enum(["development", "test", "production"]),
     DATABASE_URL: z.url(),
     AUTH_SECRET: z.string(),
+    NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
+    LOG_LEVEL: z
+      .enum(["debug", "info", "warn", "error"])
+      .default("info")
+      .optional(),
   },
 
   emptyStringAsUndefined: true,
@@ -14,6 +19,8 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     DATABASE_URL: process.env.DATABASE_URL,
     AUTH_SECRET: process.env.AUTH_SECRET,
+    NEXT_RUNTIME: process.env.NEXT_RUNTIME,
+    LOG_LEVEL: process.env.LOG_LEVEL,
   },
 
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
