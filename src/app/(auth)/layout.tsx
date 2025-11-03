@@ -6,16 +6,16 @@ const AuthLayout = ({children}: Readonly<{children: React.ReactNode}>) => {
   return (
     <>
       <header>
-        <nav className="px-6 py-4 text-end sm:px-12">
+        <nav className="bg-primary px-6 py-4 text-end sm:px-12">
           <Theme />
         </nav>
       </header>
 
-      <main className="flex grow items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-10">
+      <main className="bg-primary flex grow items-center justify-center bg-cover bg-center bg-no-repeat px-4 py-10">
         {children}
       </main>
 
-      <footer className="flex justify-between px-6 py-4 sm:px-12">
+      <footer className="bg-primary flex justify-between px-6 py-4 sm:px-12">
         <p className="text-center text-(--text-secondary)">
           © {new Date().getFullYear()} Mentora.
         </p>

@@ -24,8 +24,7 @@ export default function GlobalLayout({children}: {children: React.ReactNode}) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
-        <head />
-        <body className={`${dmSans.variable} flex h-dvh flex-col`}>
+        <body className={`${dmSans.variable} bg-primary flex h-dvh flex-col`}>
           <Providers>{children}</Providers>
           <Toaster richColors />
         </body>
