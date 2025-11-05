@@ -2,15 +2,34 @@
 
 import Image from "next/image";
 
+import {signIn} from "next-auth/react";
+
 import {Button} from "@/components/ui/button";
+import ROUTES from "@/constants/routes";
+import {logger} from "@/lib/logger";
 
 const SocialAuthForm = () => {
   const buttonClass =
     "min-h-11 w-full cursor-pointer bg-transparent dark:hover:bg-transparent border-primary border-1 shadow-none text-secondary";
 
+  const onClick = async (provider: "google" | "github") => {
+    try {
+      await signIn(provider, {
+        callbackUrl: ROUTES.HOME,
+        redirect: false,
+      });
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
   return (
     <div className="mt-6 flex flex-col gap-4">
-      <Button className={buttonClass} onClick={() => {}} variant="ghost">
+      <Button
+        className={buttonClass}
+        variant="ghost"
+        onClick={() => onClick("google")}
+      >
         <Image
           src="/icons/github.svg"
           alt="Github Logo"
@@ -21,7 +40,11 @@ const SocialAuthForm = () => {
         <span className="text-base">Continue with Github</span>
       </Button>
 
-      <Button className={buttonClass} onClick={() => {}}>
+      <Button
+        className={buttonClass}
+        variant="ghost"
+        onClick={() => onClick("github")}
+      >
         <Image
           src="/icons/google.svg"
           alt="Google Logo"

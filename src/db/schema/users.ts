@@ -1,5 +1,5 @@
-import {relations} from "drizzle-orm";
-import {pgTable, uuid, varchar} from "drizzle-orm/pg-core";
+import {InferSelectModel, relations} from "drizzle-orm";
+import {pgTable, timestamp, uuid, varchar} from "drizzle-orm/pg-core";
 import {createInsertSchema} from "drizzle-zod";
 import {z} from "zod/v4";
 
@@ -12,6 +12,7 @@ export const users = pgTable("user", {
   email: varchar("email", {length: 320}).notNull().unique(),
   role: userRoleEnum("user_role").default("USER").notNull(),
   image: varchar("image", {length: 2048}),
+  emailVerified: timestamp("emailVerified", {mode: "date"}),
   ...timestamps,
 });
 
@@ -23,7 +24,7 @@ const baseSchema = createInsertSchema(users, {
   name: schema =>
     schema
       .min(1, {message: "Name is required."})
-      .max(50, {message: "Name cannot exceed 50 characters."})
+      .max(250, {message: "Name cannot exceed 250 characters."})
       .regex(/^[a-zA-Z\s]+$/, {
         message: "Name can only contain letters and spaces.",
       }),
@@ -42,16 +43,19 @@ const baseSchema = createInsertSchema(users, {
   image: true,
 });
 
-export const userSchema = z.union([
-  z.object({
-    mode: z.literal("oauth"),
-    provider: z.enum(["google", "github"]),
-    providerAccountId: z.uuid({message: "Provider Account ID is required."}),
-    user: z.object({
-      name: baseSchema.shape.name,
-      username: baseSchema.shape.username,
-      email: baseSchema.shape.email,
-      image: baseSchema.shape.image,
-    }),
+export const oAuthSchema = z.object({
+  mode: z.literal("oauth", {message: "Mode is required."}),
+  provider: z.enum(["google", "github"]),
+  providerAccountId: z
+    .string()
+    .min(1, {message: "Provider Account ID is required."}),
+  user: z.object({
+    name: baseSchema.shape.name,
+    username: baseSchema.shape.username,
+    email: baseSchema.shape.email,
+    image: baseSchema.shape.image,
   }),
-]);
+});
+
+export type OAuthSchema = z.infer<typeof oAuthSchema>;
+export type SelectUserModel = InferSelectModel<typeof users>;
