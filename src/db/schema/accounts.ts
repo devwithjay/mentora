@@ -11,17 +11,20 @@ import {createInsertSchema} from "drizzle-zod";
 import type {AdapterAccountType} from "next-auth/adapters";
 import z from "zod/v4";
 
-import {timestamps, users} from "@/db/schema";
+import {users} from "@/db/schema";
+import {timestamps} from "@/db/schema/columns.helpers";
 
 export const accounts = pgTable(
   "account",
   {
-    userId: uuid("user_id").references(() => users.id, {onDelete: "cascade"}),
+    userId: uuid("userId")
+      .notNull()
+      .references(() => users.id, {onDelete: "cascade"}),
     name: varchar("name", {length: 255}).notNull(),
     password: varchar("password", {length: 100}),
-    type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
+    type: text("type").$type<AdapterAccountType>().notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -44,7 +47,7 @@ export const accountsRelations = relations(accounts, ({one}) => ({
 }));
 
 const baseSchema = createInsertSchema(accounts, {
-  userId: schema => schema.min(1, {message: "User ID is required."}),
+  userId: z.uuid({message: "Invalid User ID"}),
   name: schema =>
     schema
       .min(1, {message: "Name is required."})

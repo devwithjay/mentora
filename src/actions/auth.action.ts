@@ -1,15 +1,22 @@
 "use server";
 
+import bcrypt from "bcryptjs";
 import {ExtractTablesWithRelations, eq} from "drizzle-orm";
 import {NeonQueryResultHKT} from "drizzle-orm/neon-serverless";
 import {PgTransaction} from "drizzle-orm/pg-core";
 import slugify from "slugify";
 import {z} from "zod/v4";
 
+import {signIn} from "@/auth";
 import {db} from "@/db";
 import {users} from "@/db/schema";
 import {AccountSchema, accounts} from "@/db/schema/accounts";
-import {OAuthSchema, oAuthSchema} from "@/db/schema/users";
+import {
+  OAuthParams,
+  SignUpParams,
+  oAuthSchema,
+  signUpSchema,
+} from "@/db/schema/users";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
 
@@ -84,9 +91,9 @@ const generateUniqueUsername = async (
 };
 
 export const oAuthSignIn = async (
-  params: OAuthSchema
+  params: OAuthParams
 ): Promise<ActionResponse> => {
-  const validationResult = await action<OAuthSchema>({
+  const validationResult = await action<OAuthParams>({
     params,
     schema: oAuthSchema,
   });
@@ -150,6 +157,62 @@ export const oAuthSignIn = async (
           providerAccountId,
         });
       }
+    });
+
+    return {success: true};
+  } catch (error: unknown) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const signUpWithCredentials = async (
+  params: SignUpParams
+): Promise<ActionResponse> => {
+  const validationResult = await action<SignUpParams>({
+    params,
+    schema: signUpSchema,
+  });
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  const {name, email, username, password} = validationResult.params!;
+
+  try {
+    const existingUser = await db.query.users.findFirst({
+      where: (users, {eq}) => eq(users.email, email),
+    });
+    if (existingUser) throw new Error("Email already in use");
+
+    const existingUsername = await db.query.users.findFirst({
+      where: (users, {eq}) => eq(users.username, username),
+    });
+    if (existingUsername) throw new Error("Username already taken");
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    await db.transaction(async tx => {
+      const [newUser] = await tx
+        .insert(users)
+        .values({
+          name,
+          username,
+          email,
+        })
+        .returning();
+      await tx.insert(accounts).values({
+        userId: newUser.id,
+        name,
+        password: hashedPassword,
+        provider: "credentials",
+        providerAccountId: email,
+        type: "email",
+      });
+    });
+
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
     });
 
     return {success: true};

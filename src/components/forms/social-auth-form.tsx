@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import {signIn} from "next-auth/react";
+import {toast} from "sonner";
 
 import {Button} from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
@@ -20,6 +21,18 @@ const SocialAuthForm = () => {
       });
     } catch (error) {
       logger.error(error);
+      toast.error("Sign-in failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred during sign-in",
+      });
+      toast.error("Sign-in failed", {
+        description:
+          error instanceof Error
+            ? error.message
+            : "An error occurred during sign-in",
+      });
     }
   };
 

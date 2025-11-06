@@ -57,5 +57,32 @@ export const oAuthSchema = z.object({
   }),
 });
 
-export type OAuthSchema = z.infer<typeof oAuthSchema>;
+export const signUpSchema = z.object({
+  name: baseSchema.shape.name,
+  username: baseSchema.shape.username,
+  email: baseSchema.shape.email,
+  password: z
+    .string()
+    .min(6, {message: "Password must be at least 6 characters long."})
+    .max(100, {message: "Password cannot exceed 100 characters."})
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter.",
+    })
+    .regex(/[a-z]/, {
+      message: "Password must contain at least one lowercase letter.",
+    })
+    .regex(/[0-9]/, {message: "Password must contain at least one number."})
+    .regex(/[^a-zA-Z0-9]/, {
+      message: "Password must contain at least one special character.",
+    }),
+});
+
+export const signInSchema = z.object({
+  email: baseSchema.shape.email,
+  password: z.string().min(1, {message: "Password is required."}),
+});
+
 export type SelectUserModel = InferSelectModel<typeof users>;
+export type OAuthParams = z.infer<typeof oAuthSchema>;
+export type SignUpParams = z.infer<typeof signUpSchema>;
+export type SignInParams = z.infer<typeof signInSchema>;
