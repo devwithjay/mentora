@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form";
 import {toast} from "sonner";
 import {z} from "zod";
 
+import {signInWithCredentials} from "@/actions";
 import IconInput from "@/components/icon-input";
 import PasswordInput from "@/components/password-input";
 import {Button} from "@/components/ui/button";
@@ -42,14 +43,7 @@ const SignInForm = () => {
 
   const onSubmit = (data: z.infer<typeof SignInSchema>) => {
     startTransition(async () => {
-      console.log(data);
-
-      const result = {
-        success: true,
-        error: {
-          message: null,
-        },
-      };
+      const result = await signInWithCredentials(data);
 
       if (result?.success) {
         form.reset();

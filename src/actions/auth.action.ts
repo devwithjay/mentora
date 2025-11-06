@@ -13,14 +13,16 @@ import {users} from "@/db/schema";
 import {AccountSchema, accounts} from "@/db/schema/accounts";
 import {
   OAuthParams,
+  SignInParams,
   SignUpParams,
   oAuthSchema,
+  signInSchema,
   signUpSchema,
 } from "@/db/schema/users";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
 
-export const getAccountByProvider = async (
+export const getAccountByProviderId = async (
   params: string
 ): Promise<
   ActionResponse<Omit<AccountSchema, "name" | "providerAccountId">>
@@ -208,6 +210,53 @@ export const signUpWithCredentials = async (
         type: "email",
       });
     });
+
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    return {success: true};
+  } catch (error: unknown) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const signInWithCredentials = async (
+  params: SignInParams
+): Promise<ActionResponse> => {
+  const validationResult = await action<SignInParams>({
+    params,
+    schema: signInSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+  const {email, password} = validationResult.params!;
+
+  try {
+    const existingUser = await db.query.users.findFirst({
+      where: (users, {eq}) => eq(users.email, email),
+    });
+    if (!existingUser) throw new NotFoundError("User");
+
+    const existingAccount = await db.query.accounts.findFirst({
+      where: (accounts, {and, eq}) =>
+        and(
+          eq(accounts.provider, "credentials"),
+          eq(accounts.providerAccountId, email)
+        ),
+    });
+
+    if (!existingAccount) throw new NotFoundError("Account");
+
+    const passwordMatch = await bcrypt.compare(
+      password,
+      existingAccount.password!
+    );
+    if (!passwordMatch) throw new Error("Invalid credentials");
 
     await signIn("credentials", {
       email,

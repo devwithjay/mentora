@@ -26,6 +26,8 @@ export const env = createEnv({
     AUTH_SECRET: process.env.AUTH_SECRET,
     NEXT_RUNTIME: process.env.NEXT_RUNTIME,
     LOG_LEVEL: process.env.LOG_LEVEL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
+    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   },
 
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {

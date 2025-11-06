@@ -1,3 +1,15 @@
-import {getAccountByProvider, oAuthSignIn} from "./auth.action";
+import {
+  getAccountByProviderId,
+  oAuthSignIn,
+  signInWithCredentials,
+  signUpWithCredentials,
+} from "./auth.action";
+import {getUserById} from "./user.action";
 
-export {getAccountByProvider, oAuthSignIn};
+export {
+  getAccountByProviderId,
+  getUserById,
+  oAuthSignIn,
+  signInWithCredentials,
+  signUpWithCredentials,
+};
