@@ -6,6 +6,8 @@ const ROUTES = {
   SIGN_UP: "/sign-up" as Route,
   AUTH_ERROR: "/auth-error" as Route,
 
+  FORBIDDEN: "/forbidden" as Route,
+
   PROFILE: (id: string) => `/profile/${id}` as Route,
 };
 
