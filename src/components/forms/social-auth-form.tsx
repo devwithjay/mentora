@@ -16,17 +16,10 @@ const SocialAuthForm = () => {
   const onClick = async (provider: "google" | "github") => {
     try {
       await signIn(provider, {
-        callbackUrl: ROUTES.HOME,
-        redirect: false,
+        redirectTo: ROUTES.HOME,
       });
     } catch (error) {
       logger.error(error);
-      toast.error("Sign-in failed", {
-        description:
-          error instanceof Error
-            ? error.message
-            : "An error occurred during sign-in",
-      });
       toast.error("Sign-in failed", {
         description:
           error instanceof Error
