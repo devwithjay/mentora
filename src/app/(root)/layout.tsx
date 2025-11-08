@@ -1,21 +1,23 @@
-import {ReactNode} from "react";
+import {ReactNode, Suspense} from "react";
 
+import Footer from "@/components/footer";
 import Navbar from "@/components/navigation/navbar";
 
 const RootLayout = ({children}: {children: ReactNode}) => {
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
+      <div className="custom-scrollbar relative flex h-full flex-col overflow-y-scroll">
+        <header className="sticky top-0 z-100 backdrop-blur-sm">
+          {" "}
+          <Navbar />
+        </header>
 
-      <main className="grow">{children}</main>
+        <main className="grow">
+          <Suspense>{children}</Suspense>
+        </main>
 
-      <footer className="bg-primary not-checked:p-4">
-        <p className="text-secondary text-center">
-          © {new Date().getFullYear()} Mentora.
-        </p>
-      </footer>
+        <Footer />
+      </div>
     </>
   );
 };
