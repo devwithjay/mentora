@@ -8,7 +8,7 @@ const ROUTES = {
 
   FORBIDDEN: "/forbidden" as Route,
 
-  PROFILE: (id: string) => `/profile/${id}` as Route,
+  PROFILE: (username: string) => `/profile/${username}` as Route,
 };
 
 export default ROUTES;

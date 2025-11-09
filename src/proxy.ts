@@ -3,7 +3,7 @@ import {Route} from "next";
 import {auth} from "@/auth";
 import ROUTES from "@/constants/routes";
 
-const middleware = auth(req => {
+const proxy = auth(req => {
   const {nextUrl} = req;
   const isLoggedIn = Boolean(req.auth);
 
@@ -19,4 +19,4 @@ const middleware = auth(req => {
   }
 });
 
-export {middleware};
+export {proxy};
