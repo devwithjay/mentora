@@ -19,6 +19,7 @@ import {
   signInSchema,
   signUpSchema,
 } from "@/db/schema/users";
+import {env} from "@/env";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
 
@@ -62,7 +63,6 @@ const generateUniqueUsername = async (
   >
 ): Promise<string> => {
   const username = slugify(baseUsername, {
-    lower: true,
     strict: true,
     trim: true,
   });
@@ -71,7 +71,6 @@ const generateUniqueUsername = async (
   });
   if (!exists) {
     return slugify(username, {
-      lower: true,
       strict: true,
       trim: true,
     });
@@ -186,7 +185,7 @@ export const signUpWithCredentials = async (
     if (existingUser) throw new Error("Email already in use");
 
     const existingUsername = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(users.username, username),
+      where: (users, {ilike}) => ilike(users.username, username),
     });
     if (existingUsername) throw new Error("Username already taken");
 
@@ -261,6 +260,43 @@ export const signInWithCredentials = async (
     await signIn("credentials", {
       email,
       password,
+      redirect: false,
+    });
+
+    return {success: true};
+  } catch (error: unknown) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const signInAsGuest = async (): Promise<ActionResponse> => {
+  const GUEST_EMAIL = env.GUEST_EMAIL;
+  const GUEST_PASSWORD = env.GUEST_PASSWORD;
+
+  try {
+    const existingUser = await db.query.users.findFirst({
+      where: (users, {eq}) => eq(users.email, GUEST_EMAIL),
+    });
+    if (!existingUser) throw new NotFoundError("Guest User");
+
+    const existingAccount = await db.query.accounts.findFirst({
+      where: (accounts, {and, eq}) =>
+        and(
+          eq(accounts.provider, "credentials"),
+          eq(accounts.providerAccountId, GUEST_EMAIL)
+        ),
+    });
+    if (!existingAccount) throw new NotFoundError("Guest Account");
+
+    const passwordMatch = await bcrypt.compare(
+      GUEST_PASSWORD,
+      existingAccount.password!
+    );
+    if (!passwordMatch) throw new Error("Invalid guest credentials");
+
+    await signIn("credentials", {
+      email: GUEST_EMAIL,
+      password: GUEST_PASSWORD,
       redirect: false,
     });
 

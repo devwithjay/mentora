@@ -7,6 +7,8 @@ import Logo from "@/components/navigation/navbar/logo";
 import ROUTES from "@/constants/routes";
 import {cn} from "@/lib/utils";
 
+import {GuestSignIn} from "./guest-sign-in";
+
 type AuthFormProps = {
   children: ReactNode;
   title: string;
@@ -15,6 +17,7 @@ type AuthFormProps = {
   backButtonMessage: string;
   backButtonHref: Route<string> | URL;
   showSocial?: boolean;
+  showGuestSignIn?: boolean;
 };
 
 const AuthForm = ({
@@ -25,6 +28,7 @@ const AuthForm = ({
   backButtonMessage,
   backButtonHref,
   showSocial = false,
+  showGuestSignIn = false,
 }: AuthFormProps) => {
   return (
     <section className="w-full max-w-[410px] scale-95 rounded-xl px-6 py-10 sm:px-8">
@@ -46,6 +50,8 @@ const AuthForm = ({
       </div>
 
       {showSocial && <SocialAuthForm />}
+
+      {showGuestSignIn && <GuestSignIn />}
 
       <Link
         href={backButtonHref || ROUTES.HOME}

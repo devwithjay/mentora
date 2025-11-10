@@ -10,6 +10,8 @@ export const env = createEnv({
   server: {
     AUTH_SECRET: z.string(),
     DATABASE_URL: z.url(),
+    GUEST_EMAIL: z.string(),
+    GUEST_PASSWORD: z.string(),
   },
   shared: {
     NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
@@ -28,6 +30,8 @@ export const env = createEnv({
     LOG_LEVEL: process.env.LOG_LEVEL,
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    GUEST_EMAIL: process.env.GUEST_EMAIL,
+    GUEST_PASSWORD: process.env.GUEST_PASSWORD,
   },
 
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
