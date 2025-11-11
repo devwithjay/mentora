@@ -275,7 +275,7 @@ export const signInAsGuest = async (): Promise<ActionResponse> => {
 
   try {
     const existingUser = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(users.email, GUEST_EMAIL),
+      where: (users, {ilike}) => ilike(users.email, GUEST_EMAIL),
     });
     if (!existingUser) throw new NotFoundError("Guest User");
 

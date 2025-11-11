@@ -31,7 +31,10 @@ const baseSchema = createInsertSchema(users, {
   username: schema =>
     schema
       .min(3, {message: "Username must be at least 3 characters long."})
-      .max(30, {message: "Username cannot exceed 30 characters."}),
+      .max(30, {message: "Username cannot exceed 30 characters."})
+      .regex(/^[a-zA-Z0-9_]+$/, {
+        message: "Username can only contain letters, numbers, and underscores.",
+      }),
   email: z.email({message: "Please provide a valid email address."}),
   role: schema => schema.default("USER"),
   image: z.url({message: "Please provide a valid image URL."}).optional(),
