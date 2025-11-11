@@ -9,6 +9,7 @@ import {useForm} from "react-hook-form";
 import {toast} from "sonner";
 import {z} from "zod";
 
+import {signUpWithCredentials} from "@/actions";
 import IconInput from "@/components/icon-input";
 import PasswordInput from "@/components/password-input";
 import {Button} from "@/components/ui/button";
@@ -44,14 +45,7 @@ const SignUpForm = () => {
 
   const onSubmit = (data: z.infer<typeof SignUpSchema>) => {
     startTransition(async () => {
-      console.log(data);
-
-      const result = {
-        success: true,
-        error: {
-          message: null,
-        },
-      };
+      const result = await signUpWithCredentials(data);
 
       if (result?.success) {
         form.reset();

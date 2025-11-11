@@ -17,6 +17,7 @@ import {
 import ROUTES from "@/constants/routes";
 
 import Logo from "./logo";
+import MobileNav from "./mobile-nav";
 import Login from "./sign-in";
 import SignUp from "./sign-up";
 import Theme from "./theme";
@@ -63,19 +64,28 @@ const Navbar = async () => {
               </DropdownMenuItem>
 
               <DropdownMenuItem className="cursor-pointer focus:bg-(--background-secondary)">
-                <Button
-                  type="submit"
-                  className="-ml-2.5 h-fit p-0 font-normal"
-                  variant="ghost"
-                  onClick={() => signOut()}
+                <form
+                  action={async () => {
+                    "use server";
+
+                    await signOut();
+                  }}
                 >
-                  <LogOut className="h-4 w-4" />
-                  Logout
-                </Button>
+                  <Button
+                    type="submit"
+                    className="-ml-2.5 h-fit p-0 font-normal"
+                    variant="ghost"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                </form>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         )}
+
+        <MobileNav />
       </div>
     </nav>
   );
