@@ -4,11 +4,11 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import {useEffect, useTransition} from "react";
 
-import {zodResolver} from "@hookform/resolvers/zod";
+import {standardSchemaResolver} from "@hookform/resolvers/standard-schema";
 import {MailIcon, RotateCw} from "lucide-react";
 import {useForm} from "react-hook-form";
 import {toast} from "sonner";
-import {z} from "zod";
+import {z} from "zod/v4";
 
 import {signInWithCredentials} from "@/actions";
 import IconInput from "@/components/icon-input";
@@ -22,14 +22,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import ROUTES from "@/constants/routes";
-import {SignInSchema} from "@/lib/schemas";
+import {signInSchema} from "@/db/schema/users";
 
 const SignInForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SignInSchema>>({
-    resolver: zodResolver(SignInSchema),
+  const form = useForm<z.infer<typeof signInSchema>>({
+    resolver: standardSchemaResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -41,7 +41,7 @@ const SignInForm = () => {
     form.setFocus("email");
   }, [form]);
 
-  const onSubmit = (data: z.infer<typeof SignInSchema>) => {
+  const onSubmit = (data: z.infer<typeof signInSchema>) => {
     startTransition(async () => {
       const result = await signInWithCredentials(data);
 
@@ -95,7 +95,7 @@ const SignInForm = () => {
 
         <Button
           type="submit"
-          className="btn-primary min-h-11 w-full px-4 py-2"
+          className="bg-brand hover:bg-brand-hover min-h-11 w-full cursor-pointer px-4 py-2 text-base font-medium text-white"
           disabled={isPending}
         >
           {isPending ? (

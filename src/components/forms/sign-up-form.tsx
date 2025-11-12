@@ -3,11 +3,11 @@
 import {useRouter} from "next/navigation";
 import {useEffect, useTransition} from "react";
 
-import {zodResolver} from "@hookform/resolvers/zod";
+import {standardSchemaResolver} from "@hookform/resolvers/standard-schema";
 import {CircleUserRound, MailIcon, RotateCw, UserIcon} from "lucide-react";
 import {useForm} from "react-hook-form";
 import {toast} from "sonner";
-import {z} from "zod";
+import {z} from "zod/v4";
 
 import {signUpWithCredentials} from "@/actions";
 import IconInput from "@/components/icon-input";
@@ -18,18 +18,17 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import ROUTES from "@/constants/routes";
-import {SignUpSchema} from "@/lib/schemas";
+import {signUpSchema} from "@/db/schema/users";
 
 const SignUpForm = () => {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof SignUpSchema>>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: standardSchemaResolver(signUpSchema),
     defaultValues: {
       name: "",
       email: "",
@@ -43,7 +42,7 @@ const SignUpForm = () => {
     form.setFocus("name");
   }, [form]);
 
-  const onSubmit = (data: z.infer<typeof SignUpSchema>) => {
+  const onSubmit = (data: z.infer<typeof signUpSchema>) => {
     startTransition(async () => {
       const result = await signUpWithCredentials(data);
 
@@ -120,7 +119,6 @@ const SignUpForm = () => {
           name="password"
           render={({field}) => (
             <FormItem className="flex flex-col gap-3.5">
-              <FormLabel className="font-normal">Password</FormLabel>
               <FormControl>
                 <PasswordInput field={field} disabled={isPending} />
               </FormControl>
@@ -131,7 +129,7 @@ const SignUpForm = () => {
 
         <Button
           type="submit"
-          className="btn-primary min-h-11 w-full px-4 py-2 text-base"
+          className="bg-brand hover:bg-brand-hover min-h-10 w-full cursor-pointer px-4 py-2 text-white"
           disabled={isPending}
         >
           {isPending ? (
@@ -140,7 +138,7 @@ const SignUpForm = () => {
               <span>Signing up...</span>
             </>
           ) : (
-            <>Sign Up Now</>
+            <>Sign Up</>
           )}
         </Button>
       </form>
