@@ -18,6 +18,18 @@ export const metadata: Metadata = {
   title: "mentora",
   description:
     "A modern AI-based mental wellness guide inspired by timeless Bhagavad Gita teachings.",
+  icons: {
+    icon: [
+      {
+        url: "/favicon.png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/favicon-dark.png",
+        media: "(prefers-color-scheme: dark)",
+      },
+    ],
+  },
 };
 
 export default function GlobalLayout({children}: {children: React.ReactNode}) {
