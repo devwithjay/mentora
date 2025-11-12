@@ -34,7 +34,7 @@ export const GuestSignIn = () => {
     <Button
       variant="outline"
       onClick={onClick}
-      className="text-secondary border-primary mt-4 flex min-h-11 w-full cursor-pointer gap-4 border-1 bg-transparent text-base shadow-none hover:bg-transparent"
+      className="text-secondary border-primary mt-4 flex min-h-11 w-full cursor-pointer gap-4 border bg-transparent text-base shadow-none hover:bg-transparent"
       disabled={isPending}
     >
       {isPending ? (
@@ -45,7 +45,6 @@ export const GuestSignIn = () => {
       ) : (
         <>Continue as Guest</>
       )}
-      Add commentMore actions
     </Button>
   );
 };
