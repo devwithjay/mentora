@@ -34,7 +34,7 @@ const SocialAuthForm = () => {
       <Button
         className={buttonClass}
         variant="ghost"
-        onClick={() => onClick("google")}
+        onClick={() => onClick("github")}
       >
         <Image
           src="/icons/github.svg"
@@ -49,7 +49,7 @@ const SocialAuthForm = () => {
       <Button
         className={buttonClass}
         variant="ghost"
-        onClick={() => onClick("github")}
+        onClick={() => onClick("google")}
       >
         <Image
           src="/icons/google.svg"
