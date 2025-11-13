@@ -67,6 +67,9 @@
   .btn-secondary {
     @apply cursor-pointer border border-(--border-primary) shadow-none hover:bg-(--background-secondary) focus-visible:border-(--border-primary) focus-visible:ring-0 dark:hover:bg-(--background-secondary);
   }
+  .input-field {
+    @apply min-h-10 shadow-none placeholder:text-(--text-secondary) hover:outline-none focus-visible:ring-0 md:text-base dark:bg-transparent;
+  }
   .placeholder\:text-secondary {
     &::placeholder {
       color: var(--text-secondary);
@@ -105,7 +108,8 @@ html {
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: transparent;
 }
-Add commentMore actions .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 50px;
 }
