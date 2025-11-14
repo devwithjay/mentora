@@ -13,7 +13,7 @@ const SignUp = () => {
         onClick={() => router.push(ROUTES.SIGN_UP)}
         variant="default"
         size="default"
-        className="btn-primary"
+        className="btn-primary w-full"
       >
         Sign Up Now
       </Button>

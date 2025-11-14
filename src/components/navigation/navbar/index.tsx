@@ -21,23 +21,25 @@ import Logout from "./sign-out";
 import SignUp from "./sign-up";
 import Theme from "./theme";
 
-const Navbar = async () => {
+const Navbar = async ({hideLogo = false}: {hideLogo?: boolean}) => {
   const user = await getCurrentUser();
 
   return (
-    <nav className="flex w-full items-center justify-between gap-5 px-6 py-4 sm:px-12">
-      <Logo showText />
+    <nav className="flex w-full items-center justify-end gap-5 px-6 py-4 sm:px-12">
+      {!hideLogo && (
+        <div className="mr-auto">
+          <Logo showText />
+        </div>
+      )}
 
       <div className="flex gap-x-2 sm:gap-x-5">
         <Theme />
 
         {!user ? (
-          <>
-            <div className="flex gap-x-4 max-sm:hidden">
-              <Login />
-              <SignUp />
-            </div>
-          </>
+          <div className="flex gap-x-4 max-sm:hidden">
+            <Login />
+            <SignUp />
+          </div>
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger>
@@ -48,11 +50,11 @@ const Navbar = async () => {
                 </AvatarFallback>
               </Avatar>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="bg-primary mt-2 mr-5 sm:mr-11">
+            <DropdownMenuContent className="bg-primary border-primary mt-4 mr-5 border sm:mr-11">
               <DropdownMenuLabel className="text-secondary text-sm font-light">
                 {user.username}
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="border-primary border" />
               <DropdownMenuItem className="cursor-pointer focus:bg-(--background-secondary)">
                 <Link
                   href={ROUTES.PROFILE(user.username)}
