@@ -32,9 +32,9 @@ export const GuestSignIn = () => {
 
   return (
     <Button
-      variant="outline"
+      variant="ghost"
       onClick={onClick}
-      className="text-secondary border-primary mt-4 flex min-h-11 w-full cursor-pointer gap-4 border bg-transparent text-base shadow-none hover:bg-transparent"
+      className="border-primary text-secondary mt-4 min-h-11 w-full cursor-pointer border bg-transparent text-base shadow-none dark:hover:bg-transparent"
       disabled={isPending}
     >
       {isPending ? (

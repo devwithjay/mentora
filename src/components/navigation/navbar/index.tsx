@@ -1,11 +1,9 @@
 import Link from "next/link";
 
-import {LogOut, User} from "lucide-react";
-import {signOut} from "next-auth/react";
+import {User} from "lucide-react";
 
 import {getCurrentUser} from "@/auth";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Button} from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +17,7 @@ import ROUTES from "@/constants/routes";
 import Logo from "./logo";
 import MobileNav from "./mobile-nav";
 import Login from "./sign-in";
+import Logout from "./sign-out";
 import SignUp from "./sign-up";
 import Theme from "./theme";
 
@@ -31,6 +30,7 @@ const Navbar = async () => {
 
       <div className="flex gap-x-2 sm:gap-x-5">
         <Theme />
+
         {!user ? (
           <>
             <div className="flex gap-x-4 max-sm:hidden">
@@ -64,22 +64,7 @@ const Navbar = async () => {
               </DropdownMenuItem>
 
               <DropdownMenuItem className="cursor-pointer focus:bg-(--background-secondary)">
-                <form
-                  action={async () => {
-                    "use server";
-
-                    await signOut();
-                  }}
-                >
-                  <Button
-                    type="submit"
-                    className="-ml-2.5 h-fit p-0 font-normal"
-                    variant="ghost"
-                  >
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                  </Button>
-                </form>
+                <Logout />
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
