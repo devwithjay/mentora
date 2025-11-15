@@ -1,7 +1,10 @@
+import HeroSection from "@/components/sections/hero";
+
 const HomePage = async () => {
   return (
-    <div className="bg-primary flex h-full items-center justify-center px-12">
-      <h1>Content</h1>
+    <div className="bg-primary h-full px-12">
+      {" "}
+      <HeroSection />
     </div>
   );
 };
