@@ -59,3 +59,51 @@ export const CTA_CONTENT = {
     "Start with 5 free prompts every day. No credit card required. Just a calm space to explore your thoughts with guidance grounded in timeless wisdom.",
   note: "You can upgrade anytime if Mentora feels right for you.",
 };
+
+export const plans = [
+  {
+    name: "Free",
+    price: "₹0",
+    period: "/month",
+    highlight: false,
+    description: "A simple plan to get you started.",
+    features: [
+      "5 prompts per day",
+      "Basic chat access",
+      "Regular response speed",
+    ],
+    buttonText: "Continue for Free",
+    buttonVariant: "outline",
+  },
+  {
+    name: "Basic",
+    price: "₹349",
+    period: "/month",
+    highlight: true,
+    description: "Best for people who want more clarity daily.",
+    features: [
+      "100 prompts per day",
+      "Faster response speed",
+      "Emotion-aware suggestions",
+      "Priority uptime",
+    ],
+    buttonText: "Choose Basic",
+    buttonVariant: "default",
+  },
+  {
+    name: "Pro",
+    price: "₹699",
+    period: "/month",
+    highlight: false,
+    description: "Best for consistent daily self-improvement.",
+    features: [
+      "Unlimited prompts",
+      "Fastest response speed",
+      "Deep guidance mode",
+      "Early access to new features",
+      "Priority support",
+    ],
+    buttonText: "Go Pro",
+    buttonVariant: "default",
+  },
+];
