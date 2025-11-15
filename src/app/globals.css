@@ -13,6 +13,7 @@
   --background-brand-secondary: #d9f5f1;
   --background-brand-hover: #3aa394;
   --border-primary: #bfe9e2;
+  --morph-glow-opacity: 0.1;
 }
 
 :root.dark {
@@ -25,6 +26,7 @@
   --background-brand-secondary: #1f2c2a;
   --background-brand-hover: #3bbfa9;
   --border-primary: #36514f;
+  --morph-glow-opacity: 0.06;
 }
 
 @layer utilities {
