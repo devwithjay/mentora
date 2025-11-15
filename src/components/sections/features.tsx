@@ -5,8 +5,8 @@ import MorphCard from "../ui/morph-card";
 
 const FeaturesSection = () => {
   return (
-    <section className="py-6 md:pb-10">
-      <div className="mx-auto max-w-6xl px-4">
+    <section className="py-6 md:py-10">
+      <div className="mx-auto max-w-6xl">
         <h2 className="text-primary text-center text-3xl font-bold sm:text-4xl">
           Why choose Mentora?
         </h2>

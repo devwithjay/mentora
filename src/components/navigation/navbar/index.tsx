@@ -25,7 +25,7 @@ const Navbar = async ({hideLogo = false}: {hideLogo?: boolean}) => {
   const user = await getCurrentUser();
 
   return (
-    <nav className="flex w-full items-center justify-end gap-5 px-6 py-4 sm:px-12">
+    <nav className="flex w-full items-center justify-end gap-5 px-8 py-4 sm:px-12">
       {!hideLogo && (
         <div className="mr-auto">
           <Logo showText />
