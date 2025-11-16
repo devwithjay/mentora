@@ -97,7 +97,7 @@ const PricingPage = () => {
 
               if (verifyResponse.success) {
                 toast.success("Subscription activated successfully!");
-                router.push("/dashboard");
+                router.push("/chat");
               } else {
                 throw new Error(
                   typeof verifyResponse.error === "string"
