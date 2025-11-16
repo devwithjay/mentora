@@ -18,6 +18,8 @@ export const env = createEnv({
     RAZORPAY_BASIC_PLAN_ID: z.string(),
     RAZORPAY_PRO_PLAN_ID: z.string(),
     OPENAI_API_KEY: z.string(),
+    QDRANT_URL: z.string(),
+    QDRANT_API_KEY: z.string(),
   },
   shared: {
     NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
@@ -44,6 +46,8 @@ export const env = createEnv({
     RAZORPAY_BASIC_PLAN_ID: process.env.RAZORPAY_BASIC_PLAN_ID,
     RAZORPAY_PRO_PLAN_ID: process.env.RAZORPAY_PRO_PLAN_ID,
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+    QDRANT_URL: process.env.QDRANT_URL,
+    QDRANT_API_KEY: process.env.QDRANT_API_KEY,
   },
 
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {
