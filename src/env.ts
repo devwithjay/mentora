@@ -6,12 +6,17 @@ export const env = createEnv({
   clientPrefix: "NEXT_PUBLIC_",
   client: {
     NEXT_PUBLIC_APP_URL: z.url().optional(),
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: z.string(),
   },
   server: {
     AUTH_SECRET: z.string(),
     DATABASE_URL: z.url(),
     GUEST_EMAIL: z.string(),
     GUEST_PASSWORD: z.string(),
+    RAZORPAY_KEY_ID: z.string(),
+    RAZORPAY_KEY_SECRET: z.string(),
+    RAZORPAY_BASIC_PLAN_ID: z.string(),
+    RAZORPAY_PRO_PLAN_ID: z.string(),
   },
   shared: {
     NEXT_RUNTIME: z.enum(["edge", "nodejs"]).optional(),
@@ -30,8 +35,13 @@ export const env = createEnv({
     LOG_LEVEL: process.env.LOG_LEVEL,
     NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+    NEXT_PUBLIC_RAZORPAY_KEY_ID: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
     GUEST_EMAIL: process.env.GUEST_EMAIL,
     GUEST_PASSWORD: process.env.GUEST_PASSWORD,
+    RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+    RAZORPAY_BASIC_PLAN_ID: process.env.RAZORPAY_BASIC_PLAN_ID,
+    RAZORPAY_PRO_PLAN_ID: process.env.RAZORPAY_PRO_PLAN_ID,
   },
 
   onValidationError: (issues: readonly StandardSchemaV1.Issue[]) => {

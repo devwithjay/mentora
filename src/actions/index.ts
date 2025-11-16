@@ -5,6 +5,10 @@ import {
   signInWithCredentials,
   signUpWithCredentials,
 } from "./auth.action";
+import {
+  createRazorpaySubscription,
+  verifyRazorpaySubscription,
+} from "./billing.action";
 import {getUserById} from "./user.action";
 
 export {
@@ -14,4 +18,6 @@ export {
   signInAsGuest,
   signInWithCredentials,
   signUpWithCredentials,
+  createRazorpaySubscription,
+  verifyRazorpaySubscription,
 };
