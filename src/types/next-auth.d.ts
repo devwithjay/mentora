@@ -6,6 +6,7 @@ import {userRoleEnum} from "@/db/schema";
 export type ExtendedUser = DefaultSession["user"] & {
   username: string;
   role: (typeof userRoleEnum.enumValues)[number];
+  plan: string;
 };
 
 declare module "next-auth" {
@@ -18,5 +19,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     username?: string;
     role?: (typeof userRoleEnum.enumValues)[number];
+    plan?: string;
   }
 }

@@ -97,6 +97,7 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
         if (userId) token.sub = userId.toString();
         token.username = existingUser.username;
         token.role = existingUser.role;
+        token.plan = existingUser.plan;
       }
 
       return token;
@@ -106,6 +107,7 @@ export const {handlers, auth, signIn, signOut} = NextAuth({
       if (token.username && session.user)
         session.user.username = token.username;
       if (token.role && session.user) session.user.role = token.role;
+      if (token.plan) session.user.plan = token.plan;
 
       return session;
     },
