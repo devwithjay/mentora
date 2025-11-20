@@ -26,7 +26,6 @@ export async function getRelevantPassages(
         chapter: payload.chapter,
         verse: payload.verse,
 
-        // NEW — Build a text block from verse data
         text:
           buildVerseBlock(payload) ||
           payload.raw ||
@@ -43,9 +42,6 @@ export async function getRelevantPassages(
   }
 }
 
-/**
- * Build clean text block for context (sanskrit + transliteration + translation + purport)
- */
 function buildVerseBlock(payload: any): string {
   if (!payload) return "";
 
@@ -74,9 +70,6 @@ function buildVerseBlock(payload: any): string {
   return parts.join("\n\n").trim();
 }
 
-/**
- * Build final context text for the LLM
- */
 export function buildContextText(chunks: GitaChunk[]): string {
   if (chunks.length === 0) {
     return "No relevant passages found in the knowledge base.";

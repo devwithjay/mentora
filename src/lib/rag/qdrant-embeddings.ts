@@ -8,7 +8,7 @@ const GITA_COLLECTION = "gita-embeddings";
 let collectionInitialized = false;
 
 export async function ensureQdrantCollection() {
-  if (collectionInitialized) return; // Prevent multiple create calls
+  if (collectionInitialized) return;
 
   const client = getQdrantClient();
 
