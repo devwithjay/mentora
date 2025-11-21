@@ -35,12 +35,11 @@ export const metadata: Metadata = {
 export default function GlobalLayout({children}: {children: React.ReactNode}) {
   return (
     <>
-      <head>
-        <script src="https://checkout.razorpay.com/v1/checkout.js" async />
-      </head>
+      <script src="https://checkout.razorpay.com/v1/checkout.js" async />
 
       <html lang="en" suppressHydrationWarning>
         <body className={`${dmSans.variable} bg-primary flex h-dvh flex-col`}>
+          <script src="https://checkout.razorpay.com/v1/checkout.js" async />
           <Providers>{children}</Providers>
           <Toaster richColors />
         </body>
