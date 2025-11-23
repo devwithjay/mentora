@@ -86,6 +86,29 @@ export const signInSchema = z.object({
   password: z.string().min(1, {message: "Password is required."}),
 });
 
+export const updateProfileSchema = z.object({
+  userId: z.uuid({message: "Invalid user ID"}),
+  name: z
+    .string()
+    .min(1, {message: "Name is required."})
+    .max(250, {message: "Name cannot exceed 250 characters."})
+    .regex(/^[a-zA-Z\s]+$/, {
+      message: "Name can only contain letters and spaces.",
+    }),
+  username: z
+    .string()
+    .min(3, {message: "Username must be at least 3 characters long."})
+    .max(30, {message: "Username cannot exceed 30 characters."})
+    .regex(/^[a-zA-Z0-9_]+$/, {
+      message: "Username can only contain letters, numbers, and underscores.",
+    }),
+  image: z
+    .string()
+    .url({message: "Please provide a valid image URL."})
+    .optional()
+    .or(z.literal("")),
+});
+
 export type SelectUserModel = InferSelectModel<typeof users>;
 export type OAuthParams = z.infer<typeof oAuthSchema>;
 export type SignUpParams = z.infer<typeof signUpSchema>;

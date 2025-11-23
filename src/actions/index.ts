@@ -10,9 +10,14 @@ import {
   verifyRazorpaySubscription,
 } from "./billing.action";
 import {createIssue} from "./issues.action";
-import {getUserById} from "./user.action";
+import {
+  cancelSubscription,
+  getUserById,
+  updateUserProfile,
+} from "./user.action";
 
 export {
+  cancelSubscription,
   createIssue,
   createRazorpaySubscription,
   getAccountByProviderId,
@@ -21,5 +26,6 @@ export {
   signInAsGuest,
   signInWithCredentials,
   signUpWithCredentials,
+  updateUserProfile,
   verifyRazorpaySubscription,
 };
