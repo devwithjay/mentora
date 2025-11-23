@@ -1,8 +1,10 @@
 "use client";
 
+import {Route} from "next";
 import Link from "next/link";
 
 import {ArrowRight} from "lucide-react";
+import {useSession} from "next-auth/react";
 
 import {Button} from "@/components/ui/button";
 import {HERO_CONTENT} from "@/constants";
@@ -11,6 +13,30 @@ import {Badge} from "../ui/badge";
 import ColourfulText from "../ui/colourful-text";
 
 const HeroSection = () => {
+  const {data: session, status} = useSession();
+  const isAuthenticated = status === "authenticated";
+  const currentPlan = session?.user?.plan ?? "Free";
+  const normalizedPlan = typeof currentPlan === "string" ? currentPlan : "Free";
+  const isSubscribed = ["Basic", "Pro"].includes(normalizedPlan);
+
+  let primaryHref = "/sign-up";
+  let primaryLabel = "Start free trial";
+  let secondaryHref = "/pricing";
+  let secondaryLabel = "View plans";
+
+  if (isAuthenticated) {
+    primaryHref = "/chat";
+    if (isSubscribed) {
+      primaryLabel = "Open Mentora";
+      secondaryHref = "/pricing";
+      secondaryLabel = "Manage plan";
+    } else {
+      primaryLabel = "Go to chat";
+      secondaryHref = "/pricing";
+      secondaryLabel = "Upgrade plan";
+    }
+  }
+
   return (
     <section className="py-12 sm:py-16 lg:px-0">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-8 text-center">
@@ -33,17 +59,17 @@ const HeroSection = () => {
           {HERO_CONTENT.description}
         </p>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-          <Link href="/sign-up" className="w-full sm:w-auto">
-            <Button className="btn-primary rounded-full px-4! font-semibold">
-              Start free trial
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row sm:justify-center">
+          <Link href={primaryHref as Route} className="w-full sm:w-auto">
+            <Button className="btn-primary w-full rounded-full px-4 py-2.5 text-sm font-semibold sm:px-5">
+              {primaryLabel}
               <ArrowRight className="size-4" />
             </Button>
           </Link>
 
-          <Link href="/pricing" className="w-full sm:w-auto">
+          <Link href={secondaryHref as Route} className="w-full sm:w-auto">
             <Button className="btn-secondary w-full rounded-full px-4 py-2.5 text-sm font-semibold">
-              View plans
+              {secondaryLabel}
             </Button>
           </Link>
         </div>
