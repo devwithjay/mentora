@@ -14,7 +14,10 @@ const Footer = () => {
           <Link href="/" className="hover:text-primary transition">
             Report an Issue
           </Link>
-          <Link href="/" className="hover:text-primary transition">
+          <Link
+            href="/privacy-policy"
+            className="hover:text-primary transition"
+          >
             Privacy Policy
           </Link>
         </div>
