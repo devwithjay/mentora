@@ -107,3 +107,22 @@ export const plans = [
     buttonVariant: "default",
   },
 ];
+
+export const faqs = [
+  {
+    q: "What is Mentora?",
+    a: "Mentora is an AI companion offering warm, supportive guidance rooted in the wisdom of the Bhagavad Gita.",
+  },
+  {
+    q: "Is Mentora a replacement for therapy?",
+    a: "No. Mentora provides emotional reflection and spiritual guidance, but it is not a substitute for professional mental health care.",
+  },
+  {
+    q: "How many messages can I send per day?",
+    a: "Your daily message limit depends on your plan. Free users get a limited number, while premium plans unlock higher limits.",
+  },
+  {
+    q: "Does Mentora store my conversations?",
+    a: "Yes, but securely and only to improve your experience. Your data is never sold or shared.",
+  },
+];
