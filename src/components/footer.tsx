@@ -8,10 +8,7 @@ const Footer = () => {
     <footer className="border-primary border-t py-6 text-sm">
       <div className="text-secondary mx-12 flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row md:gap-0 xl:mx-auto">
         <div className="flex flex-wrap items-center gap-x-3 lg:gap-x-4">
-          <Link href="/" className="hover:text-primary transition">
-            Help & Support
-          </Link>
-          <Link href="/" className="hover:text-primary transition">
+          <Link href="/report-issue" className="hover:text-primary transition">
             Report an Issue
           </Link>
           <Link
