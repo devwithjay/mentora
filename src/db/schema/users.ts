@@ -3,7 +3,8 @@ import {pgTable, timestamp, uuid, varchar} from "drizzle-orm/pg-core";
 import {createInsertSchema} from "drizzle-zod";
 import {z} from "zod/v4";
 
-import {accounts, timestamps, userRoleEnum} from "@/db/schema";
+import {accounts} from "./accounts";
+import {timestamps, userRoleEnum} from "./columns.helpers";
 
 export const users = pgTable("user", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -109,6 +110,30 @@ export const updateProfileSchema = z.object({
     .or(z.literal("")),
 });
 
+export const getUsersSchema = z.object({
+  page: z.number().min(1).default(1),
+  pageSize: z.number().min(1).max(100).default(10),
+  search: z.string().optional().default(""),
+});
+
+export type PaginatedUsersResponse = {
+  users: Array<{
+    id: string;
+    name: string;
+    username: string;
+    email: string;
+    plan: string;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
+  }>;
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
+export type GetUsersParams = z.infer<typeof getUsersSchema>;
 export type SelectUserModel = InferSelectModel<typeof users>;
 export type OAuthParams = z.infer<typeof oAuthSchema>;
 export type SignUpParams = z.infer<typeof signUpSchema>;

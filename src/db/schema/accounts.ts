@@ -11,8 +11,8 @@ import {createInsertSchema} from "drizzle-zod";
 import type {AdapterAccountType} from "next-auth/adapters";
 import z from "zod/v4";
 
-import {users} from "@/db/schema";
-import {timestamps} from "@/db/schema/columns.helpers";
+import {timestamps} from "./columns.helpers";
+import {users} from "./users";
 
 export const accounts = pgTable(
   "account",

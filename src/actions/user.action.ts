@@ -1,11 +1,18 @@
 "use server";
 
-import {eq} from "drizzle-orm";
+import {count, desc, eq, ilike, or} from "drizzle-orm";
 import {z} from "zod/v4";
 
+import {requireRole} from "@/auth";
 import {db} from "@/db";
 import {subscriptions} from "@/db/schema";
-import {SelectUserModel, users} from "@/db/schema/users";
+import {
+  GetUsersParams,
+  PaginatedUsersResponse,
+  SelectUserModel,
+  getUsersSchema,
+  users,
+} from "@/db/schema/users";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
 import {razorpay} from "@/lib/razorpay";
@@ -235,6 +242,79 @@ export const cancelSubscription = async (
           message: "Subscription cancelled and refund initiated successfully.",
         },
       }),
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const getAllUsers = async (
+  params: GetUsersParams
+): Promise<ActionResponse<PaginatedUsersResponse>> => {
+  await requireRole(["ADMIN"]);
+
+  const validationResult = await action({
+    params,
+    schema: getUsersSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const {page, pageSize, search} = validationResult.params!;
+
+  try {
+    const offset = (page - 1) * pageSize;
+
+    const searchConditions = search
+      ? or(
+          ilike(users.name, `%${search}%`),
+          ilike(users.username, `%${search}%`),
+          ilike(users.email, `%${search}%`)
+        )
+      : undefined;
+
+    const [totalResult] = await db
+      .select({count: count()})
+      .from(users)
+      .where(searchConditions);
+
+    const total = totalResult?.count || 0;
+
+    const usersList = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        username: users.username,
+        email: users.email,
+        plan: users.plan,
+        role: users.role,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
+      })
+      .from(users)
+      .where(searchConditions)
+      .orderBy(desc(users.createdAt))
+      .limit(pageSize)
+      .offset(offset);
+
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      success: true,
+      data: {
+        users: usersList.map(user => ({
+          ...user,
+          createdAt: user.createdAt,
+          updatedAt: user.updatedAt,
+        })),
+        total,
+        page,
+        pageSize,
+        totalPages,
+      },
+      status: 200,
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

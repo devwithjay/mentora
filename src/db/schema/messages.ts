@@ -82,7 +82,7 @@ export const createMessageSchema = z.object({
 });
 
 export const createConversationSchema = z.object({
-  userId: z.string().uuid(),
+  userId: z.uuid(),
   title: z.string().max(255).optional(),
 });
 
