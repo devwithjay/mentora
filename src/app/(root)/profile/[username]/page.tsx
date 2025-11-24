@@ -53,7 +53,6 @@ const ProfilePage = () => {
   const [saving, setSaving] = useState(false);
   const [cancelling, setCancelling] = useState(false);
 
-  // Edit form state
   const [editForm, setEditForm] = useState({
     name: "",
     username: "",
@@ -110,7 +109,6 @@ const ProfilePage = () => {
       setEditDialogOpen(false);
       toast.success("Profile updated successfully!");
 
-      // Update session with new data
       await updateSession({
         ...session,
         user: {
