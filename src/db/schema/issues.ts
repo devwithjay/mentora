@@ -36,6 +36,15 @@ export const insertIssueSchema = createInsertSchema(issues, {
   category: true,
 });
 
+export const getIssuesSchema = z.object({
+  page: z.number().min(1).default(1),
+  pageSize: z.number().min(1).max(100).default(10),
+  search: z.string().optional().default(""),
+  status: z.enum(["all", "open", "resolved"]).default("all"),
+});
+
+export type GetIssuesParams = z.infer<typeof getIssuesSchema>;
+
 export type InsertIssueParams = z.infer<typeof insertIssueSchema>;
 export type SelectIssueModel = {
   id: string;
@@ -46,4 +55,25 @@ export type SelectIssueModel = {
   status: string;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type AdminIssueModel = {
+  id: string;
+  userId: string;
+  userName: string | null;
+  userEmail: string | null;
+  title: string;
+  description: string;
+  category: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type PaginatedIssuesResponse = {
+  issues: AdminIssueModel[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
 };
