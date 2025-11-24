@@ -1,12 +1,17 @@
 "use server";
 
-import {eq} from "drizzle-orm";
+import {count, desc, eq, ilike, or} from "drizzle-orm";
 import {z} from "zod/v4";
 
+import {requireRole} from "@/auth";
 import {db} from "@/db";
+import {users} from "@/db/schema";
 import {
+  GetIssuesParams,
   InsertIssueParams,
+  PaginatedIssuesResponse,
   type SelectIssueModel,
+  getIssuesSchema,
   insertIssueSchema,
   issues,
 } from "@/db/schema/issues";
@@ -62,22 +67,6 @@ export const getIssueById = async (
     return {
       success: true,
       data: issue,
-      status: 200,
-    };
-  } catch (error) {
-    return handleError(error) as ErrorResponse;
-  }
-};
-
-export const getAllIssues = async (): Promise<
-  ActionResponse<SelectIssueModel[]>
-> => {
-  try {
-    const rows = await db.select().from(issues).orderBy(issues.createdAt);
-
-    return {
-      success: true,
-      data: rows,
       status: 200,
     };
   } catch (error) {
@@ -166,6 +155,100 @@ export const deleteIssue = async (
     return {
       success: true,
       data: null,
+      status: 200,
+    };
+  } catch (error) {
+    return handleError(error) as ErrorResponse;
+  }
+};
+
+export const getAllIssues = async (
+  params: GetIssuesParams
+): Promise<ActionResponse<PaginatedIssuesResponse>> => {
+  await requireRole(["ADMIN"]);
+
+  const validationResult = await action({
+    params,
+    schema: getIssuesSchema,
+  });
+
+  if (validationResult instanceof Error) {
+    return handleError(validationResult) as ErrorResponse;
+  }
+
+  const {page, pageSize, search, status} = validationResult.params!;
+
+  try {
+    const offset = (page - 1) * pageSize;
+
+    const issuesQuery = db
+      .select({
+        id: issues.id,
+        userId: issues.userId,
+        userName: users.name,
+        userEmail: users.email,
+        title: issues.title,
+        description: issues.description,
+        category: issues.category,
+        status: issues.status,
+        createdAt: issues.createdAt,
+        updatedAt: issues.updatedAt,
+      })
+      .from(issues)
+      .leftJoin(users, eq(issues.userId, users.id))
+
+      .$dynamic();
+
+    const whereConditions = [];
+
+    if (search) {
+      whereConditions.push(
+        or(
+          ilike(issues.title, `%${search}%`),
+          ilike(issues.description, `%${search}%`),
+          ilike(issues.category, `%${search}%`),
+          ilike(users.name, `%${search}%`),
+          ilike(users.email, `%${search}%`)
+        )
+      );
+    }
+
+    if (status !== "all") {
+      whereConditions.push(ilike(issues.status, status));
+    }
+
+    const [totalResult] = await db
+      .select({count: count()})
+      .from(issues)
+      .leftJoin(users, eq(issues.userId, users.id))
+
+      .where(whereConditions.length > 0 ? or(...whereConditions) : undefined);
+
+    const total = totalResult?.count || 0;
+
+    const issuesList = await issuesQuery
+      .where(whereConditions.length > 0 ? or(...whereConditions) : undefined)
+      .orderBy(desc(issues.createdAt))
+      .limit(pageSize)
+      .offset(offset);
+
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      success: true,
+      data: {
+        issues: issuesList.map(issue => ({
+          ...issue,
+          userName: issue.userName ?? "Deleted User",
+          userEmail: issue.userEmail ?? "N/A",
+          createdAt: issue.createdAt!.toISOString(),
+          updatedAt: issue.updatedAt!.toISOString(),
+        })),
+        total,
+        page,
+        pageSize,
+        totalPages,
+      },
       status: 200,
     };
   } catch (error) {
