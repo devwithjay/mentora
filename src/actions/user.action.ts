@@ -4,9 +4,11 @@ import {eq} from "drizzle-orm";
 import {z} from "zod/v4";
 
 import {db} from "@/db";
+import {subscriptions} from "@/db/schema";
 import {SelectUserModel, users} from "@/db/schema/users";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
+import {razorpay} from "@/lib/razorpay";
 
 export const getUserById = async (
   params: string
@@ -138,7 +140,80 @@ export const cancelSubscription = async (
       };
     }
 
-    const [updated] = await db
+    const activeSubscription = await db.query.subscriptions.findFirst({
+      where: (subscriptions, {eq, and}) =>
+        and(
+          eq(subscriptions.userId, params),
+          eq(subscriptions.status, "active")
+        ),
+      orderBy: (subscriptions, {desc}) => [desc(subscriptions.createdAt)],
+    });
+
+    if (!activeSubscription) {
+      return {
+        success: false,
+        error: {
+          message: "No active subscription found.",
+        },
+        status: 400,
+      };
+    }
+
+    let refundId = null;
+    if (activeSubscription.paymentId) {
+      try {
+        const payment = await razorpay.payments.fetch(
+          activeSubscription.paymentId
+        );
+
+        const refund = await razorpay.payments.refund(
+          activeSubscription.paymentId,
+          {
+            amount: payment.amount,
+            speed: "normal",
+            notes: {
+              reason: "Subscription cancelled by user",
+              userId: params,
+            },
+          }
+        );
+
+        refundId = refund.id;
+
+        if (activeSubscription.orderId) {
+          try {
+            await razorpay.subscriptions.cancel(
+              activeSubscription.orderId,
+              false
+            );
+          } catch (subError) {
+            console.error("Error cancelling Razorpay subscription:", subError);
+          }
+        }
+      } catch (refundError) {
+        console.error("Refund error:", refundError);
+        return {
+          success: false,
+          error: {
+            message: "Failed to process refund. Please contact support.",
+          },
+          status: 500,
+        };
+      }
+    }
+
+    await db
+      .update(subscriptions)
+      .set({
+        status: "cancelled",
+        refundId: refundId || null,
+        refundStatus: refundId ? "processing" : null,
+        cancelledAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(subscriptions.id, activeSubscription.id));
+
+    const [updatedUser] = await db
       .update(users)
       .set({
         plan: "Free",
@@ -147,12 +222,19 @@ export const cancelSubscription = async (
       .where(eq(users.id, params))
       .returning();
 
-    if (!updated) throw new NotFoundError("User");
+    if (!updatedUser) throw new NotFoundError("User");
 
     return {
       success: true,
-      data: updated,
+      data: updatedUser,
       status: 200,
+
+      ...(refundId && {
+        meta: {
+          refundId,
+          message: "Subscription cancelled and refund initiated successfully.",
+        },
+      }),
     };
   } catch (error) {
     return handleError(error) as ErrorResponse;

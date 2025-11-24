@@ -23,6 +23,12 @@ export const subscriptions = pgTable("subscription", {
   paymentId: varchar("payment_id", {length: 255}),
   status: subscriptionStatusEnum.default("pending"),
   signature: varchar("signature", {length: 255}),
+  refundId: varchar("refund_id", {length: 255}),
+  refundStatus: varchar("refund_status", {length: 50}),
+  cancelledAt: timestamp("cancelled_at", {
+    withTimezone: true,
+    mode: "date",
+  }),
   createdAt: timestamp("created_at", {
     withTimezone: true,
     mode: "date",
@@ -51,6 +57,10 @@ const baseInsertSchema = createInsertSchema(subscriptions, {
     schema.max(255, "Payment ID cannot exceed 255 characters.").optional(),
   signature: schema =>
     schema.max(255, "Signature cannot exceed 255 characters.").optional(),
+  refundId: schema =>
+    schema.max(255, "Refund ID cannot exceed 255 characters.").optional(),
+  refundStatus: schema =>
+    schema.max(50, "Refund status cannot exceed 50 characters.").optional(),
   status: schema =>
     schema.refine(
       val => ["pending", "active", "failed", "cancelled"].includes(val),
@@ -63,6 +73,9 @@ const baseInsertSchema = createInsertSchema(subscriptions, {
   paymentId: true,
   signature: true,
   status: true,
+  refundId: true,
+  refundStatus: true,
+  cancelledAt: true,
 });
 
 export const createSubscriptionSchema = z.object({
@@ -75,6 +88,9 @@ export const updateSubscriptionSchema = z.object({
   paymentId: baseInsertSchema.shape.paymentId.optional(),
   signature: baseInsertSchema.shape.signature.optional(),
   status: baseInsertSchema.shape.status.optional(),
+  refundId: baseInsertSchema.shape.refundId.optional(),
+  refundStatus: baseInsertSchema.shape.refundStatus.optional(),
+  cancelledAt: baseInsertSchema.shape.cancelledAt.optional(),
 });
 
 export type SelectSubscriptionModel = InferSelectModel<typeof subscriptions>;
