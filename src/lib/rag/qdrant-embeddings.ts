@@ -26,39 +26,6 @@ export async function ensureQdrantCollection() {
   collectionInitialized = true;
 }
 
-export async function storeGitaEmbedding(
-  chunkId: string,
-  text: string,
-  metadata?: Record<string, unknown>
-) {
-  const client = getQdrantClient();
-
-  const embeddingResult = await embed({
-    model: openai.embedding("text-embedding-3-small"),
-    value: text,
-  });
-
-  const vector = embeddingResult.embedding;
-
-  await client.upsert(GITA_COLLECTION, {
-    points: [
-      {
-        id: crypto.randomUUID(),
-        vector: vector as number[],
-        payload: {
-          id: chunkId,
-          text,
-          chapter: metadata?.chapter,
-          verse: metadata?.verse,
-          sanskrit: metadata?.sanskrit,
-          translation: metadata?.translation,
-          purport: metadata?.purport,
-        },
-      },
-    ],
-  });
-}
-
 export async function searchSimilarGitaPassages(query: string, limit = 6) {
   await ensureQdrantCollection();
 
@@ -79,18 +46,10 @@ export async function searchSimilarGitaPassages(query: string, limit = 6) {
 
   return results.map(result => ({
     id: result.payload?.id as string,
+    chapter: result.payload?.chapter as number,
+    verse: result.payload?.verse as number,
     text: result.payload?.text as string,
     score: result.score,
     metadata: result.payload,
   }));
-}
-
-function hashString(str: string): string {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString();
 }

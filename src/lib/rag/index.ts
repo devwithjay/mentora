@@ -1,4 +1,3 @@
-/* eslint-disable */
 import {searchSimilarGitaPassages} from "@/lib/rag/qdrant-embeddings";
 
 export type GitaChunk = {
@@ -7,6 +6,7 @@ export type GitaChunk = {
   verse?: number;
   text: string;
   score?: number;
+  metadata?: Record<string, unknown>;
 };
 
 export async function getRelevantPassages(
@@ -18,53 +18,50 @@ export async function getRelevantPassages(
   try {
     const results = await searchSimilarGitaPassages(query, topK);
 
-    return results.map((result: any) => {
-      const payload = result.metadata ?? {};
-
-      return {
-        id: result.id,
-        chapter: payload.chapter,
-        verse: payload.verse,
-
-        text:
-          buildVerseBlock(payload) ||
-          payload.raw ||
-          payload.translation ||
-          payload.sanskrit ||
-          "",
-
-        score: result.score,
-      };
-    });
+    return results.map(result => ({
+      id: result.id,
+      chapter: result.chapter,
+      verse: result.verse,
+      text: result.text || "",
+      score: result.score,
+      metadata: result.metadata || undefined,
+    }));
   } catch (error) {
     console.error("Error retrieving relevant passages:", error);
     return [];
   }
 }
 
-function buildVerseBlock(payload: any): string {
+function buildVerseBlock(payload: Record<string, unknown>): string {
   if (!payload) return "";
 
   const parts: string[] = [];
 
-  if (payload.sanskrit) {
-    parts.push(`Sanskrit:\n${payload.sanskrit}`);
+  if (
+    typeof payload.chapter === "number" &&
+    typeof payload.verse === "number"
+  ) {
+    parts.push(`**Bhagavad-gītā ${payload.chapter}.${payload.verse}**\n`);
   }
 
-  if (payload.transliteration) {
-    parts.push(`Transliteration:\n${payload.transliteration}`);
+  if (typeof payload.sanskrit === "string" && payload.sanskrit) {
+    parts.push(`**Sanskrit:**\n${payload.sanskrit}`);
   }
 
-  if (payload.synonyms) {
-    parts.push(`Synonyms:\n${payload.synonyms}`);
+  if (typeof payload.transliteration === "string" && payload.transliteration) {
+    parts.push(`**Transliteration:**\n${payload.transliteration}`);
   }
 
-  if (payload.translation) {
-    parts.push(`Translation:\n${payload.translation}`);
+  if (typeof payload.synonyms === "string" && payload.synonyms) {
+    parts.push(`**Synonyms:**\n${payload.synonyms}`);
   }
 
-  if (payload.purport) {
-    parts.push(`Purport:\n${payload.purport}`);
+  if (typeof payload.translation === "string" && payload.translation) {
+    parts.push(`**Translation:**\n${payload.translation}`);
+  }
+
+  if (typeof payload.purport === "string" && payload.purport) {
+    parts.push(`**Purport:**\n${payload.purport}`);
   }
 
   return parts.join("\n\n").trim();
@@ -76,15 +73,10 @@ export function buildContextText(chunks: GitaChunk[]): string {
   }
 
   return chunks
-    .map((c, idx) => {
-      const reference =
-        c.chapter && c.verse
-          ? `Bhagavad-gītā ${c.chapter}.${c.verse}`
-          : `Excerpt ${idx + 1}`;
+    .map(c => {
+      const formattedVerse = buildVerseBlock(c.metadata || {});
 
-      const safeText = c.text?.trim() || "No verse text available";
-
-      return `${reference}:\n${safeText}`;
+      return formattedVerse || c.text || "No verse text available";
     })
     .join("\n\n---\n\n");
 }
