@@ -57,16 +57,34 @@ const ChatPage = () => {
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const [isAutoScrollEnabled, setIsAutoScrollEnabled] = useState(true);
 
   const isAuthenticated = status === "authenticated";
   const userId = session?.user?.id as string | undefined;
   const plan = session?.user?.plan ?? "Free";
 
   const scrollToBottom = () => {
+    if (!isAutoScrollEnabled) return;
     messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
   };
 
-  useEffect(scrollToBottom, [messages]);
+  useEffect(scrollToBottom, [messages, isAutoScrollEnabled]);
+
+  const handleScroll = () => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const threshold = 80;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+
+    if (distanceFromBottom > threshold) {
+      if (isAutoScrollEnabled) setIsAutoScrollEnabled(false);
+    } else {
+      if (!isAutoScrollEnabled) setIsAutoScrollEnabled(true);
+    }
+  };
 
   useEffect(() => {
     fetchConversations();
@@ -117,6 +135,7 @@ const ChatPage = () => {
       setConversationId(newConversation.id);
       setMessages([]);
       setIsSidebarOpen(false);
+      setIsAutoScrollEnabled(true);
     }
   };
 
@@ -172,6 +191,7 @@ const ChatPage = () => {
     const userMessage = input.trim();
     setInput("");
     setIsStreaming(true);
+    setIsAutoScrollEnabled(true);
 
     const optimisticMessage: Message = {
       id: crypto.randomUUID(),
@@ -228,8 +248,6 @@ const ChatPage = () => {
           )
         );
       }
-
-      await loadMessages(conversationId);
     } finally {
       setIsStreaming(false);
     }
@@ -333,6 +351,7 @@ const ChatPage = () => {
                           onClick={() => {
                             setConversationId(conv.id);
                             setIsSidebarOpen(false);
+                            setIsAutoScrollEnabled(true);
                           }}
                           className="flex-1 truncate px-3 py-2.5 text-left text-sm"
                         >
@@ -415,7 +434,11 @@ const ChatPage = () => {
             </div>
           </header>
 
-          <div className="flex-1 overflow-y-auto px-4 py-4 sm:px-10 sm:py-6 lg:px-20">
+          <div
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex-1 overflow-y-auto px-4 py-4 sm:px-10 sm:py-6 lg:px-20"
+          >
             <div className="mx-auto flex h-full max-w-4xl flex-col">
               {isLoadingMessages ? (
                 <div className="text-secondary flex flex-1 flex-col items-center justify-center text-center">

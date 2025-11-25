@@ -43,7 +43,7 @@ const Navbar = async ({hideLogo = false}: {hideLogo?: boolean}) => {
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Avatar className="hidden scale-110 cursor-pointer rounded-md sm:block">
+              <Avatar className="border-primary hidden scale-110 cursor-pointer rounded-md border sm:block">
                 <AvatarImage src={user.image || ""} alt={user.name!} />
                 <AvatarFallback className="rounded-md dark:bg-(--background-secondary)">
                   {user.name?.charAt(0)}
