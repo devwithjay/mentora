@@ -19,7 +19,6 @@ import {
   signInSchema,
   signUpSchema,
 } from "@/db/schema/users";
-import {env} from "@/env";
 import {action, handleError} from "@/lib/handlers";
 import {NotFoundError} from "@/lib/http-errors";
 
@@ -260,43 +259,6 @@ export const signInWithCredentials = async (
     await signIn("credentials", {
       email,
       password,
-      redirect: false,
-    });
-
-    return {success: true};
-  } catch (error: unknown) {
-    return handleError(error) as ErrorResponse;
-  }
-};
-
-export const signInAsGuest = async (): Promise<ActionResponse> => {
-  const GUEST_EMAIL = env.GUEST_EMAIL;
-  const GUEST_PASSWORD = env.GUEST_PASSWORD;
-
-  try {
-    const existingUser = await db.query.users.findFirst({
-      where: (users, {eq}) => eq(users.email, GUEST_EMAIL),
-    });
-    if (!existingUser) throw new NotFoundError("Guest User");
-
-    const existingAccount = await db.query.accounts.findFirst({
-      where: (accounts, {and, eq}) =>
-        and(
-          eq(accounts.provider, "credentials"),
-          eq(accounts.providerAccountId, GUEST_EMAIL)
-        ),
-    });
-    if (!existingAccount) throw new NotFoundError("Guest Account");
-
-    const passwordMatch = await bcrypt.compare(
-      GUEST_PASSWORD,
-      existingAccount.password!
-    );
-    if (!passwordMatch) throw new Error("Invalid guest credentials");
-
-    await signIn("credentials", {
-      email: GUEST_EMAIL,
-      password: GUEST_PASSWORD,
       redirect: false,
     });
 

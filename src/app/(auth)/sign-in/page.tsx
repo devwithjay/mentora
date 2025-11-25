@@ -11,7 +11,6 @@ const SignIn = () => {
       backButtonLabel="Sign up"
       backButtonHref={ROUTES.SIGN_UP}
       showSocial
-      showGuestSignIn
     >
       <SignInForm />
     </AuthForm>

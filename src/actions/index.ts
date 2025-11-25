@@ -1,7 +1,6 @@
 import {
   getAccountByProviderId,
   oAuthSignIn,
-  signInAsGuest,
   signInWithCredentials,
   signUpWithCredentials,
 } from "./auth.action";
@@ -23,7 +22,6 @@ export {
   getAccountByProviderId,
   getUserById,
   oAuthSignIn,
-  signInAsGuest,
   signInWithCredentials,
   signUpWithCredentials,
   updateUserProfile,
