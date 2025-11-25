@@ -136,7 +136,10 @@ const ChatPage = () => {
       setMessages([]);
       setIsSidebarOpen(false);
       setIsAutoScrollEnabled(true);
+      return newConversation.id;
     }
+
+    return null;
   };
 
   const deleteConversation = async (id: string) => {
@@ -185,8 +188,16 @@ const ChatPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isStreaming || !conversationId) return;
+    if (!input.trim() || isStreaming) return;
     if (!isAuthenticated || !userId) return;
+
+    let currentConversationId = conversationId;
+
+    if (!currentConversationId) {
+      const newId = await createNewConversation();
+      if (!newId) return;
+      currentConversationId = newId;
+    }
 
     const userMessage = input.trim();
     setInput("");
@@ -208,7 +219,7 @@ const ChatPage = () => {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({
           messages: [{role: "user", content: userMessage}],
-          conversationId,
+          conversationId: currentConversationId,
           userId,
           plan,
         }),
@@ -302,7 +313,7 @@ const ChatPage = () => {
               <div className="text-secondary p-6 text-center text-sm">
                 <p className="mb-2">No conversations yet</p>
                 <p className="text-xs opacity-70">
-                  Tap &quot;New Chat&quot; to start.
+                  Type a message below to start.
                 </p>
               </div>
             ) : (
@@ -525,12 +536,7 @@ const ChatPage = () => {
 
                 <Button
                   type="submit"
-                  disabled={
-                    isStreaming ||
-                    !input.trim() ||
-                    !conversationId ||
-                    !isAuthenticated
-                  }
+                  disabled={isStreaming || !input.trim() || !isAuthenticated}
                   className="bg-brand hover:bg-brand-hover mt-1 flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-md disabled:opacity-50 sm:mt-0 sm:px-6 sm:py-3"
                 >
                   {isStreaming ? (
