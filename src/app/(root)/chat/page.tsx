@@ -108,6 +108,12 @@ const ChatPage = () => {
     if (conversationId) loadMessages(conversationId);
   }, [conversationId, loadMessages]);
 
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      window.location.href = "/";
+    }
+  }, [status]);
+
   const fetchConversations = async () => {
     try {
       setIsLoadingConversations(true);
@@ -291,6 +297,18 @@ const ChatPage = () => {
               <X className="h-5 w-5" />
             </Button>
           </div>
+
+          {isSidebarOpen && (
+            <div className="p-3 md:hidden">
+              <Button
+                onClick={createNewConversation}
+                className="bg-brand hover:bg-brand-hover flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-white shadow-md"
+              >
+                <Plus className="h-4 w-4" />
+                New Chat
+              </Button>
+            </div>
+          )}
 
           <div className="border-primary hidden border-b p-3 pt-6 md:block">
             <Button
