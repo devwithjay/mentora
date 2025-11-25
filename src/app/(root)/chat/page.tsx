@@ -14,6 +14,7 @@ import {
   X,
 } from "lucide-react";
 import {useSession} from "next-auth/react";
+import ReactMarkdown from "react-markdown";
 
 import {Badge} from "@/components/ui/badge";
 import {Button} from "@/components/ui/button";
@@ -449,9 +450,29 @@ const ChatPage = () => {
                             : "border-primary bg-primary text-primary border"
                         }`}
                       >
-                        <div className="wrap-break-word whitespace-pre-wrap">
-                          {message.content}
-                        </div>
+                        {message.role === "assistant" ? (
+                          <div className="prose prose-sm dark:prose-invert max-w-none">
+                            <ReactMarkdown
+                              components={{
+                                p: ({node, ...props}) => (
+                                  <p className="mb-2" {...props} />
+                                ),
+                                strong: ({node, ...props}) => (
+                                  <strong className="font-bold" {...props} />
+                                ),
+                                em: ({node, ...props}) => (
+                                  <em className="italic" {...props} />
+                                ),
+                              }}
+                            >
+                              {message.content}
+                            </ReactMarkdown>
+                          </div>
+                        ) : (
+                          <div className="wrap-break-word whitespace-pre-wrap">
+                            {message.content}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
