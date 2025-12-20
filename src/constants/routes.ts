@@ -8,6 +8,8 @@ const ROUTES = {
 
   FORBIDDEN: "/forbidden" as Route,
 
+  CHATS: "/chat" as Route,
+
   PROFILE: (username: string) => `/profile/${username}` as Route,
 };
 

@@ -50,7 +50,7 @@ const SignUpForm = () => {
         form.reset();
         toast.success("Signed up successfully");
 
-        router.replace(ROUTES.HOME);
+        router.replace(ROUTES.CHATS);
       } else {
         toast.error(result?.error?.message || "Something went wrong");
       }
