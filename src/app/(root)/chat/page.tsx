@@ -158,8 +158,9 @@ const ChatPage = () => {
       setConversations(updated);
 
       if (conversationId === id) {
-        if (updated.length > 0) setConversationId(updated[0].id);
-        else {
+        if (updated.length > 0) {
+          setConversationId(updated[0].id);
+        } else {
           setConversationId("");
           setMessages([]);
         }
@@ -178,10 +179,12 @@ const ChatPage = () => {
   };
 
   const saveTitle = async (id: string) => {
+    if (!editTitle.trim()) return;
+
     const response = await fetch(`/api/conversations/${id}`, {
       method: "PATCH",
       headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({title: editTitle}),
+      body: JSON.stringify({title: editTitle.trim()}),
     });
 
     if (response.ok) {
@@ -279,7 +282,7 @@ const ChatPage = () => {
         />
       )}
 
-      <div className="bg-primary border-primary text-primary flex h-screen border-t">
+      <div className="bg-primary border-primary text-primary flex h-[calc(100vh-4rem)] overflow-hidden border-t">
         <aside
           className={`border-primary bg-secondary fixed inset-y-0 left-0 z-30 flex w-72 flex-col border-r shadow-sm transition-transform duration-200 ease-out md:static md:translate-x-0 ${
             isSidebarOpen
@@ -421,7 +424,7 @@ const ChatPage = () => {
           </div>
         </aside>
 
-        <div className="flex flex-1 flex-col md:ml-0">
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden md:ml-0">
           <header className="border-primary bg-primary flex items-center justify-between border-b px-4 py-3 backdrop-blur-sm md:hidden">
             <Button
               variant="ghost"
